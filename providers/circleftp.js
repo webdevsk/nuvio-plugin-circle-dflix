@@ -1,6 +1,6 @@
 /**
  * circleftp - Nuvio Provider (BDIX)
- * Generated: 2026-10-07T17:18:00.067Z
+ * Generated: 2026-10-07T17:23:45.179Z
  */
 var __defProp = Object.defineProperty;
 var __defProps = Object.defineProperties;

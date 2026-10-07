@@ -1,6 +1,6 @@
 /**
  * bdix - Nuvio Provider (BDIX)
- * Generated: 2026-10-07T17:18:00.091Z
+ * Generated: 2026-10-07T17:23:45.211Z
  */
 var __defProp = Object.defineProperty;
 var __defProps = Object.defineProperties;

@@ -98,12 +98,20 @@ The test suite verifies:
    - Enter your local manifest URL: `http://<YOUR_PC_IP>:3000/manifest.json`.
    - Toggle on **CircleFTP**, **DFLIX.live**, or **BDIX (Circle + DFLIX)**.
 
-### Method B: GitHub Repository (Production)
-1. Push this repository to GitHub.
-2. In Nuvio, add your raw GitHub manifest URL:
+### Direct Installation Link (No Server Required!)
+
+In the **Nuvio** app:
+1. Go to **Settings** &rarr; **Scrapers** (or **Add Repository**).
+2. Enter the Repository URL:
    ```
-   https://raw.githubusercontent.com/<YOUR_USERNAME>/<REPO_NAME>/main/manifest.json
+   https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/manifest.json
    ```
+3. Enable **CircleFTP**, **DFLIX.live**, or **BDIX (Circle + DFLIX)**. Done!
+
+### Direct Plugin Files (If Pasting Code Directly into Nuvio)
+- **CircleFTP:** [`providers/circleftp.js`](https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/circleftp.js)
+- **DFLIX.live:** [`providers/dflixlive.js`](https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/dflixlive.js)
+- **BDIX All-in-One:** [`providers/bdix.js`](https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/bdix.js)
 
 ---
 

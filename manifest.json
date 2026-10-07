@@ -15,6 +15,7 @@
         "tv"
       ],
       "filename": "providers/circleftp.js",
+      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/circleftp.js",
       "enabled": true,
       "hasSettings": true,
       "formats": [
@@ -33,6 +34,7 @@
         "tv"
       ],
       "filename": "providers/dflixlive.js",
+      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/dflixlive.js",
       "enabled": true,
       "hasSettings": true,
       "formats": [
@@ -51,6 +53,7 @@
         "tv"
       ],
       "filename": "providers/bdix.js",
+      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/bdix.js",
       "enabled": true,
       "hasSettings": true,
       "formats": [
@@ -71,6 +74,7 @@
         "tv"
       ],
       "filename": "providers/circleftp.js",
+      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/circleftp.js",
       "enabled": true,
       "hasSettings": true,
       "formats": [
@@ -89,6 +93,7 @@
         "tv"
       ],
       "filename": "providers/dflixlive.js",
+      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/dflixlive.js",
       "enabled": true,
       "hasSettings": true,
       "formats": [
@@ -107,6 +112,7 @@
         "tv"
       ],
       "filename": "providers/bdix.js",
+      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/bdix.js",
       "enabled": true,
       "hasSettings": true,
       "formats": [
