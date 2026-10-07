@@ -1,0 +1,25 @@
+{
+  "name": "nuvio-plugin-circle-dflix",
+  "version": "1.0.0",
+  "description": "Nuvio local scrapers for Bangladeshi BDIX platforms Circle FTP and DFLIX.live",
+  "main": "providers/bdix.js",
+  "scripts": {
+    "build": "node build.js",
+    "start": "node server.js",
+    "serve": "node server.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "nuvio",
+    "bdix",
+    "circleftp",
+    "dflix",
+    "scrapers",
+    "providers"
+  ],
+  "author": "BDIX Community",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
