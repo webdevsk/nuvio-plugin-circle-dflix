@@ -2,7 +2,8 @@
 
 /**
  * Build script for Nuvio BDIX Providers
- * Bundles ES modules from src/ into standalone providers/ compatible with Hermes & React Native.
+ * Bundles ES modules from src/ into standalone providers/ for NuvioTV (QuickJS runtime).
+ * Output is IIFE format — no CommonJS module dependency, registers directly on globalThis.
  */
 
 const esbuild = require('esbuild');
@@ -26,16 +27,24 @@ async function buildProvider(provider) {
       entryPoints: [provider.entry],
       bundle: true,
       outfile: outFile,
-      format: 'cjs',
+      format: 'iife',
+      globalName: '__NuvioProvider__',
       platform: 'neutral',
-      target: 'es2020', // Native async/await for both Hermes (mobile) and QuickJS (TV)
+      target: 'es2020',
       minify: false,
       sourcemap: false,
       banner: {
-        js: `/**\n * ${provider.name} - Nuvio Provider (BDIX)\n * Generated: ${new Date().toISOString()}\n */`
+        js: `/**\n * ${provider.name} - Nuvio Provider (BDIX / NuvioTV)\n * Generated: ${new Date().toISOString()}\n */`
       },
       footer: {
-        js: `\nif (typeof globalThis !== 'undefined' && typeof module !== 'undefined' && module.exports) {\n  globalThis.getStreams = module.exports.getStreams;\n  globalThis.onSettings = module.exports.onSettings;\n}`
+        js: [
+          '',
+          '// Register provider on globalThis for NuvioTV QuickJS runtime',
+          'if (typeof globalThis !== "undefined" && typeof __NuvioProvider__ !== "undefined") {',
+          '  globalThis.getStreams = __NuvioProvider__.getStreams;',
+          '  globalThis.onSettings = __NuvioProvider__.onSettings;',
+          '}'
+        ].join('\n')
       },
       logLevel: 'info'
     });

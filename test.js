@@ -1,11 +1,46 @@
 /**
  * Test runner for Nuvio BDIX Providers
- * Runs end-to-end tests using the bundled files in providers/
+ * Runs end-to-end tests using the bundled IIFE files in providers/
+ * Simulates NuvioTV's QuickJS eval() context by executing scripts and reading globalThis.
  */
 
-const circleftp = require('./providers/circleftp.js');
-const dflixlive = require('./providers/dflixlive.js');
-const bdix = require('./providers/bdix.js');
+const fs = require('fs');
+const vm = require('vm');
+const path = require('path');
+
+function loadProvider(filename) {
+  const code = fs.readFileSync(path.join(__dirname, 'providers', filename), 'utf-8');
+  const context = vm.createContext({
+    globalThis: {},
+    console,
+    fetch: globalThis.fetch,
+    setTimeout,
+    clearTimeout,
+    AbortController: typeof AbortController !== 'undefined' ? AbortController : undefined,
+    Promise,
+    Object,
+    Array,
+    Set,
+    Math,
+    String,
+    Number,
+    parseInt,
+    isNaN,
+    encodeURIComponent,
+    Error,
+    TypeError,
+    ReferenceError,
+  });
+  vm.runInContext(code, context);
+  return {
+    getStreams: context.globalThis.getStreams,
+    onSettings: context.globalThis.onSettings,
+  };
+}
+
+const circleftp = loadProvider('circleftp.js');
+const dflixlive = loadProvider('dflixlive.js');
+const bdix = loadProvider('bdix.js');
 
 function validateStreamObject(stream, providerName) {
   const issues = [];

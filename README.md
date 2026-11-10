@@ -1,17 +1,19 @@
 # Nuvio BDIX Scrapers (Circle FTP & DFLIX.live)
 
-High-performance, client-side streaming providers for the **Nuvio** app (React Native / Hermes engine), purpose-built for Bangladeshi BDIX networks targeting **Circle FTP** and **DFLIX.live**.
+High-performance, client-side streaming providers for **Nuvio** (mobile) and **NuvioTV** (Android TV / Google TV), purpose-built for Bangladeshi BDIX networks targeting **Circle FTP** and **DFLIX.live**.
 
 ---
 
 ## ⚡ Features
 
 - **Direct BDIX Speed:** Streams directly from local FTP hosts (`circleftp.net`, `dflix.live`) over BDIX peering without external proxies or intermediate cloud relay latency.
-- **Client-Side & Hermes Ready:**
-  - 100% compliant with React Native and Hermes runtime constraints.
+- **Client-Side & Cross-Platform Ready:**
+  - Compatible with both **Nuvio Mobile** (Hermes) and **NuvioTV** (QuickJS / Android TV).
+  - 100% compliant with React Native and Android TV runtime constraints.
   - Zero Node.js-only built-in modules (`fs`, `child_process`, `crypto`, `http`).
   - Uses standard `fetch()` API with `skipSizeCheck: true`.
-  - Transpiles `async/await` down to ES2016 generator functions via `esbuild` so that dynamic code evaluation inside Hermes does not throw syntax errors.
+  - Targets ES2020 via `esbuild` — native `async/await` works on both Hermes 0.12+ and QuickJS.
+  - Robust timeout fallbacks for low-end TV hardware (Mi Box, generic BDIX boxes).
 - **Strict Nuvio Spec Compliance:**
   - Produces standard Nuvio stream objects (`name`, `title`, `url`, `quality`, optional `subtitles`).
   - Supports movies and TV series (season and episode matching).
@@ -33,7 +35,7 @@ High-performance, client-side streaming providers for the **Nuvio** app (React N
 nuvio-plugin-circle-dflix/
 ├── manifest.json              # Nuvio repository manifest for plugin installation
 ├── package.json               # Build and test scripts
-├── build.js                   # Bundler targeting ES2016 for Hermes compatibility
+├── build.js                   # Bundler targeting ES2020 for Hermes + QuickJS (TV) compatibility
 ├── server.js                  # Local HTTP server with CORS for Wi-Fi debugging
 ├── test.js                    # End-to-end live testing suite
 ├── src/
