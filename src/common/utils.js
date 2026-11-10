@@ -103,27 +103,36 @@ export function extractSeasonNumber(seasonName) {
 
 /**
  * Safe fetch with configurable timeout and abort controller.
+ * Compatible with both Nuvio Mobile (Hermes) and NuvioTV (QuickJS) runtimes.
  */
-export async function safeFetch(url, options = {}, timeoutMs = 7000) {
-  const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+export async function safeFetch(url, options = {}, timeoutMs = 10000) {
+  const hasAbort = typeof AbortController !== 'undefined';
+  const controller = hasAbort ? new AbortController() : null;
   const timeoutId = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
 
   try {
     const fetchOptions = {
       ...options,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         ...(options.headers || {})
       },
-      skipSizeCheck: true // Nuvio sandbox flag
+      skipSizeCheck: true // Nuvio sandbox flag (ignored on TV if unsupported)
     };
 
     if (controller) {
       fetchOptions.signal = controller.signal;
     }
 
-    const response = await fetch(url, fetchOptions);
-    return response;
+    // If no AbortController available (some TV runtimes), use Promise.race as fallback
+    if (!controller) {
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Fetch timeout')), timeoutMs)
+      );
+      return await Promise.race([fetch(url, fetchOptions), timeoutPromise]);
+    }
+
+    return await fetch(url, fetchOptions);
   } finally {
     if (timeoutId) clearTimeout(timeoutId);
   }

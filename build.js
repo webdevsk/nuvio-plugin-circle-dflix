@@ -28,7 +28,7 @@ async function buildProvider(provider) {
       outfile: outFile,
       format: 'cjs',
       platform: 'neutral',
-      target: 'es2016', // Lowers async/await to generators for Hermes compatibility
+      target: 'es2020', // Native async/await for both Hermes (mobile) and QuickJS (TV)
       minify: false,
       sourcemap: false,
       banner: {

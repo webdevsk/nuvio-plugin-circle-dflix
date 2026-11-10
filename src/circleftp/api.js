@@ -3,7 +3,7 @@ import { safeFetch } from '../common/utils.js';
 /**
  * Query Circle FTP search endpoint
  */
-export async function searchPosts(apiUrl, query, timeoutMs = 6000) {
+export async function searchPosts(apiUrl, query, timeoutMs = 10000) {
   try {
     const url = `${apiUrl.replace(/\/+$/, '')}/posts?searchTerm=${encodeURIComponent(query)}&order=desc`;
     const res = await safeFetch(url, {
@@ -22,7 +22,7 @@ export async function searchPosts(apiUrl, query, timeoutMs = 6000) {
 /**
  * Fetch detailed post content (direct video link or series episodes)
  */
-export async function getPostDetail(apiUrl, id, timeoutMs = 6000) {
+export async function getPostDetail(apiUrl, id, timeoutMs = 10000) {
   try {
     const url = `${apiUrl.replace(/\/+$/, '')}/posts/${id}`;
     const res = await safeFetch(url, {

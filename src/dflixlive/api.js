@@ -3,7 +3,7 @@ import { safeFetch } from '../common/utils.js';
 /**
  * Search dflix.live for movie or TV show title
  */
-export async function searchTitles(baseUrl, query, timeoutMs = 6000) {
+export async function searchTitles(baseUrl, query, timeoutMs = 10000) {
   try {
     const cleanBase = baseUrl.replace(/\/+$/, '');
     const url = `${cleanBase}/api/search?q=${encodeURIComponent(query)}`;
@@ -23,7 +23,7 @@ export async function searchTitles(baseUrl, query, timeoutMs = 6000) {
 /**
  * Fetch media details and playable file list from dflix.live
  */
-export async function getTitleDetails(baseUrl, id, timeoutMs = 6000) {
+export async function getTitleDetails(baseUrl, id, timeoutMs = 10000) {
   try {
     const cleanBase = baseUrl.replace(/\/+$/, '');
     const url = `${cleanBase}/api/title/${id}`;

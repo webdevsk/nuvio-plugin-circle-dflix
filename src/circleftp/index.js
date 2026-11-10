@@ -85,7 +85,7 @@ export async function getStreams(tmdbId, mediaType, season = null, episode = nul
           url: videoUrl,
           quality: quality,
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36'
           }
         });
       }
@@ -139,7 +139,7 @@ export async function getStreams(tmdbId, mediaType, season = null, episode = nul
           url: videoUrl,
           quality: quality,
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36'
           }
         });
       }

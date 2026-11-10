@@ -48,7 +48,7 @@ export async function resolveMetadata(tmdbId, mediaType, customApiKey = null) {
 
       const res = await safeFetch(endpoint, {
         headers: { 'Accept': 'application/json' }
-      }, 5000);
+      }, 8000);
 
       if (!res.ok) continue;
 
