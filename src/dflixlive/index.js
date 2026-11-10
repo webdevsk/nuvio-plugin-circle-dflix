@@ -3,29 +3,34 @@ import { searchTitles, getTitleDetails } from './api.js';
 import { resolveMetadata } from '../common/tmdb.js';
 import {
   titlesMatch,
-  extractQuality
+  extractQuality,
+  extractFileType
 } from '../common/utils.js';
 
 /**
  * DFLIX.live Stream Resolver for Nuvio
  *
- * @param {string|number} tmdbId - TMDB ID, IMDB ID, or title string
- * @param {'movie'|'tv'} mediaType - 'movie' or 'tv'
+ * @param {string|number|object} tmdbId - TMDB ID, IMDB ID, or title string
+ * @param {'movie'|'tv'|'series'} mediaType - 'movie', 'tv', or 'series'
  * @param {number|null} season - Season number (1-based, TV only)
  * @param {number|null} episode - Episode number (1-based, TV only)
+ * @param {object} userSettings - Scraper settings
  * @returns {Promise<Array<Object>>} Array of Nuvio stream objects
  */
-export async function getStreams(tmdbId, mediaType, season = null, episode = null) {
+export async function getStreams(tmdbId, mediaType, season = null, episode = null, userSettings = {}) {
   try {
-    const settings = (typeof globalThis !== 'undefined' && globalThis.SCRAPER_SETTINGS) || {};
+    const globalSettings = (typeof globalThis !== 'undefined' && globalThis.SCRAPER_SETTINGS) || {};
+    const settings = { ...globalSettings, ...(userSettings || {}) };
     const baseUrl = settings.dflixBaseUrl || DEFAULT_BASE_URL;
     const cleanBase = baseUrl.replace(/\/+$/, '');
     const customTmdbKey = settings.tmdbApiKey || null;
 
+    const isTv = mediaType === 'tv' || mediaType === 'series' || mediaType === 'tvshow';
+
     // 1. Resolve media metadata (title and year)
     const meta = await resolveMetadata(tmdbId, mediaType, customTmdbKey);
     if (!meta || !meta.title) {
-      console.log(`[DFLIX.live] Could not resolve metadata for TMDB ID: ${tmdbId}`);
+      console.log(`[DFLIX.live] Could not resolve metadata for TMDB ID: ${JSON.stringify(tmdbId)}`);
       return [];
     }
 
@@ -40,7 +45,7 @@ export async function getStreams(tmdbId, mediaType, season = null, episode = nul
     }
 
     // 3. Match candidate title
-    const expectedKind = mediaType === 'tv' ? 'tv' : 'movie';
+    const expectedKind = isTv ? 'tv' : 'movie';
     const matches = results.filter(r => {
       // Kind check (movie or tv)
       if (r.kind && r.kind !== expectedKind) return false;
@@ -80,7 +85,7 @@ export async function getStreams(tmdbId, mediaType, season = null, episode = nul
 
       let relevantFiles = [];
 
-      if (mediaType === 'movie') {
+      if (!isTv) {
         relevantFiles = details.files.filter(f => !f.season && !f.episode);
         // Fallback: if no files have null season/episode, take all files
         if (relevantFiles.length === 0) {
@@ -107,7 +112,8 @@ export async function getStreams(tmdbId, mediaType, season = null, episode = nul
 
         const quality = extractQuality(file.quality || fullStreamUrl);
         const container = (file.container || 'mp4').toUpperCase();
-        const epLabel = mediaType === 'tv' ? `S${file.season}E${file.episode} - ` : '';
+        const epLabel = isTv ? `S${file.season}E${file.episode} - ` : '';
+        const fileType = extractFileType(fullStreamUrl, file.container);
 
         // Parse subtitles if provided by DFLIX
         const subtitles = [];
@@ -129,6 +135,8 @@ export async function getStreams(tmdbId, mediaType, season = null, episode = nul
           title: `[DFLIX.live] ${epLabel}${quality} [${container}]`,
           url: fullStreamUrl,
           quality: quality,
+          type: fileType,
+          provider: 'dflixlive',
           headers: {
             'User-Agent': 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36'
           },

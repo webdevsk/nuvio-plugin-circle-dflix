@@ -1,6 +1,6 @@
 {
   "name": "BDIX Providers (Circle & DFLIX)",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Local Bangladeshi BDIX streaming scrapers for Circle FTP and DFLIX.live",
   "author": "BDIX Community",
   "scrapers": [
@@ -8,14 +8,13 @@
       "id": "circleftp",
       "name": "CircleFTP",
       "description": "Stream movies and TV series directly from Circle FTP over BDIX",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "BDIX Community",
       "supportedTypes": [
         "movie",
         "tv"
       ],
       "filename": "providers/circleftp.js",
-      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/circleftp.js",
       "enabled": true,
       "hasSettings": true,
       "formats": [
@@ -27,14 +26,13 @@
       "id": "dflixlive",
       "name": "DFLIX.live",
       "description": "Stream movies, TV series, and multi-language subtitles from DFLIX.live over BDIX",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "BDIX Community",
       "supportedTypes": [
         "movie",
         "tv"
       ],
       "filename": "providers/dflixlive.js",
-      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/dflixlive.js",
       "enabled": true,
       "hasSettings": true,
       "formats": [
@@ -46,73 +44,13 @@
       "id": "bdix",
       "name": "BDIX (Circle + DFLIX)",
       "description": "Aggregates streams from both Circle FTP and DFLIX.live in parallel",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "BDIX Community",
       "supportedTypes": [
         "movie",
         "tv"
       ],
       "filename": "providers/bdix.js",
-      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/bdix.js",
-      "enabled": true,
-      "hasSettings": true,
-      "formats": [
-        "mkv",
-        "mp4"
-      ]
-    }
-  ],
-  "providers": [
-    {
-      "id": "circleftp",
-      "name": "CircleFTP",
-      "description": "Stream movies and TV series directly from Circle FTP over BDIX",
-      "version": "1.0.0",
-      "author": "BDIX Community",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/circleftp.js",
-      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/circleftp.js",
-      "enabled": true,
-      "hasSettings": true,
-      "formats": [
-        "mkv",
-        "mp4"
-      ]
-    },
-    {
-      "id": "dflixlive",
-      "name": "DFLIX.live",
-      "description": "Stream movies, TV series, and multi-language subtitles from DFLIX.live over BDIX",
-      "version": "1.0.0",
-      "author": "BDIX Community",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/dflixlive.js",
-      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/dflixlive.js",
-      "enabled": true,
-      "hasSettings": true,
-      "formats": [
-        "mp4",
-        "mkv"
-      ]
-    },
-    {
-      "id": "bdix",
-      "name": "BDIX (Circle + DFLIX)",
-      "description": "Aggregates streams from both Circle FTP and DFLIX.live in parallel",
-      "version": "1.0.0",
-      "author": "BDIX Community",
-      "supportedTypes": [
-        "movie",
-        "tv"
-      ],
-      "filename": "providers/bdix.js",
-      "url": "https://raw.githubusercontent.com/mahdirdrmc/nuvio-plugin-circle-dflix/main/providers/bdix.js",
       "enabled": true,
       "hasSettings": true,
       "formats": [

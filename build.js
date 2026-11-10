@@ -30,7 +30,7 @@ async function buildProvider(provider) {
       format: 'iife',
       globalName: '__NuvioProvider__',
       platform: 'neutral',
-      target: 'es2020',
+      target: 'es2016', // Lowers async/await to generators for Hermes & QuickJS compatibility
       minify: false,
       sourcemap: false,
       banner: {
@@ -39,10 +39,24 @@ async function buildProvider(provider) {
       footer: {
         js: [
           '',
-          '// Register provider on globalThis for NuvioTV QuickJS runtime',
+          '// Universal export for CommonJS (Nuvio) and global (QuickJS / TV sandboxes)',
+          'if (typeof module !== "undefined" && module.exports) {',
+          '  module.exports = {',
+          '    getStreams: typeof __NuvioProvider__ !== "undefined" ? __NuvioProvider__.getStreams : undefined,',
+          '    onSettings: typeof __NuvioProvider__ !== "undefined" ? __NuvioProvider__.onSettings : undefined',
+          '  };',
+          '}',
           'if (typeof globalThis !== "undefined" && typeof __NuvioProvider__ !== "undefined") {',
           '  globalThis.getStreams = __NuvioProvider__.getStreams;',
           '  globalThis.onSettings = __NuvioProvider__.onSettings;',
+          '}',
+          'if (typeof global !== "undefined" && typeof __NuvioProvider__ !== "undefined") {',
+          '  global.getStreams = __NuvioProvider__.getStreams;',
+          '  global.onSettings = __NuvioProvider__.onSettings;',
+          '}',
+          'if (typeof self !== "undefined" && typeof __NuvioProvider__ !== "undefined") {',
+          '  self.getStreams = __NuvioProvider__.getStreams;',
+          '  self.onSettings = __NuvioProvider__.onSettings;',
           '}'
         ].join('\n')
       },

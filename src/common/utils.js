@@ -137,3 +137,20 @@ export async function safeFetch(url, options = {}, timeoutMs = 10000) {
     if (timeoutId) clearTimeout(timeoutId);
   }
 }
+
+/**
+ * Detect video file container format (mp4, mkv, m3u8) for Nuvio stream schema.
+ */
+export function extractFileType(url, container) {
+  if (container && typeof container === 'string') {
+    const c = container.toLowerCase();
+    if (c.includes('mkv')) return 'mkv';
+    if (c.includes('mp4')) return 'mp4';
+    if (c.includes('m3u8') || c.includes('hls')) return 'm3u8';
+  }
+  const cleanUrl = String(url || '').toLowerCase();
+  if (cleanUrl.includes('.mkv')) return 'mkv';
+  if (cleanUrl.includes('.mp4')) return 'mp4';
+  if (cleanUrl.includes('.m3u8')) return 'm3u8';
+  return 'mp4';
+}

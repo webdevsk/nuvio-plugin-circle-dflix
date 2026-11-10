@@ -6,28 +6,33 @@ import {
   extractYear,
   extractQuality,
   extractEpisodeNumber,
-  extractSeasonNumber
+  extractSeasonNumber,
+  extractFileType
 } from '../common/utils.js';
 
 /**
  * Circle FTP Stream Resolver for Nuvio
  *
- * @param {string|number} tmdbId - TMDB ID, IMDB ID, or title string
- * @param {'movie'|'tv'} mediaType - 'movie' or 'tv'
+ * @param {string|number|object} tmdbId - TMDB ID, IMDB ID, or title string
+ * @param {'movie'|'tv'|'series'} mediaType - 'movie', 'tv', or 'series'
  * @param {number|null} season - Season number (1-based, TV only)
  * @param {number|null} episode - Episode number (1-based, TV only)
+ * @param {object} userSettings - Scraper settings
  * @returns {Promise<Array<Object>>} Array of Nuvio stream objects
  */
-export async function getStreams(tmdbId, mediaType, season = null, episode = null) {
+export async function getStreams(tmdbId, mediaType, season = null, episode = null, userSettings = {}) {
   try {
-    const settings = (typeof globalThis !== 'undefined' && globalThis.SCRAPER_SETTINGS) || {};
+    const globalSettings = (typeof globalThis !== 'undefined' && globalThis.SCRAPER_SETTINGS) || {};
+    const settings = { ...globalSettings, ...(userSettings || {}) };
     const apiUrl = settings.circleApiUrl || DEFAULT_API_URL;
     const customTmdbKey = settings.tmdbApiKey || null;
+
+    const isTv = mediaType === 'tv' || mediaType === 'series' || mediaType === 'tvshow';
 
     // 1. Resolve media metadata (title and release year)
     const meta = await resolveMetadata(tmdbId, mediaType, customTmdbKey);
     if (!meta || !meta.title) {
-      console.log(`[CircleFTP] Could not resolve metadata for TMDB ID: ${tmdbId}`);
+      console.log(`[CircleFTP] Could not resolve metadata for TMDB ID: ${JSON.stringify(tmdbId)}`);
       return [];
     }
 
@@ -44,7 +49,7 @@ export async function getStreams(tmdbId, mediaType, season = null, episode = nul
     const streams = [];
     const seenUrls = new Set();
 
-    if (mediaType === 'movie') {
+    if (!isTv) {
       // Filter movie candidates
       const matches = posts.filter(p => {
         if (p.type !== 'singleVideo') return false;
@@ -78,12 +83,15 @@ export async function getStreams(tmdbId, mediaType, season = null, episode = nul
 
         const quality = extractQuality(matches[i].quality || detail.title || videoUrl);
         const releaseNote = matches[i].quality ? ` - ${matches[i].quality}` : '';
+        const fileType = extractFileType(videoUrl, matches[i].quality);
 
         streams.push({
           name: PROVIDER_NAME,
           title: `[CircleFTP] ${quality}${releaseNote}`,
           url: videoUrl,
           quality: quality,
+          type: fileType,
+          provider: 'circleftp',
           headers: {
             'User-Agent': 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36'
           }
@@ -132,12 +140,15 @@ export async function getStreams(tmdbId, mediaType, season = null, episode = nul
         seenUrls.add(videoUrl);
 
         const quality = extractQuality(matches[i].quality || epData.title || videoUrl);
+        const fileType = extractFileType(videoUrl, matches[i].quality);
 
         streams.push({
           name: PROVIDER_NAME,
           title: `[CircleFTP] S${targetSeason}E${targetEpisode} - ${quality}`,
           url: videoUrl,
           quality: quality,
+          type: fileType,
+          provider: 'circleftp',
           headers: {
             'User-Agent': 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36'
           }
